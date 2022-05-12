@@ -27,16 +27,11 @@ var server = https.createServer(serverOptions, app)
 
 //Resources
 //********************************************************
-app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
-app.use('/css', express.static(__dirname + '/client/css'));
-app.use('/js', express.static(__dirname + '/client/js'));
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
-app.use('/bootstrap-icons', express.static(__dirname + '/node_modules/bootstrap-icons/font'));
-app.use('/vcs', express.static(__dirname + '/node_modules/vcs-realtime-sdk/dist/umd'));
-app.use('/requirejs', express.static(__dirname + '/node_modules/requirejs'));
-app.use('/res', express.static(__dirname + '/res'));
+app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/node_modules'));
+app.use(express.static(__dirname + '/res'));
 app.use('/favicon.ico', express.static('./favicon.ico'));
-//pp.use(express.favicon(path.join(__dirname, 'favicon.ico')));
+
 
 
 //Pages
