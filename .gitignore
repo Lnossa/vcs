@@ -8,6 +8,7 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 #custom excludes
+package-lock.json
 client/js/clientConfig.js
 src/apiConfig.js
 cert/*
