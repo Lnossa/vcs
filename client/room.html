@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vcs/vcs-realtime-sdk.min.js"></script>
+    <script src="/requirejs/require.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bootstrap-icons/bootstrap-icons.css" />
+
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row h-100">
+            <div class="row" style="margin-top:auto;margin-bottom:auto;">
+                <div class="col-sm-10">
+                    <div class="row" id="divOtherParticipants">
+                    </div>
+                    <div class="row" id="divMe" style="margin-top:1em;">
+                    </div>
+                </div>
+                <div class="col-sm-2" id="divChat">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Room chat</h5>
+                          
+                          <textarea id="textAreaChat" class="form-control" rows="20"  style="resize: none;" readonly></textarea>
+
+                          
+
+                          <div class="input-group mb-2" style="margin-top:1em;">
+                            <input type="text" class="form-control" id="textSendMessage" placeholder="Your message..">
+                            <div class="input-group-append">
+                                <button id="btnSendMessage" class="input-group-text">></div>
+                              </div>
+                          </div>
+
+
+
+                        </div>
+                      </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+<script src="/js/vcs.js"></script>
+
+</html>

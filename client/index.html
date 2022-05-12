@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/requirejs/require.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bootstrap-icons/bootstrap-icons.css" />
+
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+        }
+
+        th {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row h-100">
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4"></div>
+                <div class="col-4 text-right" style="margin-top:auto;margin-bottom:auto;">
+                    <button type="button" class="btn btn-sm btn-primary float-end" data-bs-toggle="modal"
+                        data-bs-target="#createRoomModal">Create Room</button>
+                    <br><br>
+                    <table id="roomTable" class="table table-sm table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Join</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roomTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center;" id="placeholderRow">Fetching data...</td>
+                            </tr>
+                            <!-- auto-generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="/js/main.js"></script>
+
+</html>
+
+
+
+<!-- createRoomModal -->
+<div class="modal fade" id="createRoomModal" tabindex="-1" aria-labelledby="createRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createRoomModalLabel">New roomerence room</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="form-inline" action="/create" method="post">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="roomName" name="roomName" autocomplete="off"
+                            placeholder="Roomerence room name">
+                        <label for="roomName">Name</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="roomDesc" name="roomDesc" autocomplete="off"
+                            placeholder="Roomerence room description">
+                        <label for="roomDesc">Description</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- joinRoomModal -->
+<div class="modal fade" id="joinRoomModal" tabindex="-1" aria-labelledby="joinRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="joinRoomModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="form-inline" action="/room" method="get">
+                <input type="hidden" id="roomId" name="roomId">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="userName" name="userName" autocomplete="off"
+                            placeholder="Roomerence room name">
+                        <label for="userName">Your name</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Join</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>
