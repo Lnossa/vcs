@@ -39,7 +39,7 @@ app.use('/favicon.ico', express.static('./favicon.ico'));
 
 // Main page
 app.get('/', function (req,res){
-    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
     res.write(fs.readFileSync("client/index.html"));
     res.end();
 });
@@ -49,7 +49,7 @@ app.get('/room', async function(req,res) {
     var room = null;
     if(req.query && req.query.roomId)
     {
-        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
         res.write(fs.readFileSync("client/room.html"));
     }
     res.end();

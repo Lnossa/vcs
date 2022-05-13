@@ -3,20 +3,58 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
 
     var me = null;
     var room = null;
-    var s2tClient = null;
+    var v2tClient = null;
     var inputMessage = document.getElementById("textSendMessage");
     var btnSendMessage = document.getElementById("btnSendMessage");
     var textAreaChat = document.getElementById("textAreaChat");
     var switchVoiceToText = document.getElementById("switchVoiceToText");
 
+
+    class chatMessage {
+        constructor(sender, text, type='msg', language='') {
+            this.sender = sender;
+            this.text = text;
+            this.type = type;
+            this.language = language;
+        }
+
+        writeInChatBox() {
+            var pDiv = document.createElement('p');
+            switch(this.type)
+            {
+                case 'msg': {
+                    pDiv.className = 'text-secondary';
+                    break;
+                }
+                case 'v2t': {
+                    pDiv.className = 'text-info';
+                    break;
+                }
+                case 'sys': {
+                    pDiv.className = 'text-warning';
+                    break;
+                }
+            }
+
+            
+            pDiv.style = 'margin-bottom:0;'
+            pDiv.innerHTML = this.sender + ": " + this.text;
+    
+            textAreaChat.appendChild(pDiv);
+        }
+
+        async sendToOthers() {
+            await room.sendMessageToParticipant(this);
+        }
+    }
+
+
     btnSendMessage.addEventListener("click", async function() {
-        writeInChatBox(me.name, inputMessage.value)
-        var message = {
-            type: 'text',
-            text: inputMessage.value
-        };
-        inputMessage.value = '';
-        await room.sendMessageToParticipant(message);
+        const msg = new chatMessage(me.name, inputMessage.value);
+        msg.writeInChatBox();
+        msg.sendToOthers()
+            .catch( e => console.log("Failed to send message: '" + e + "'")) //log error
+            .finally(() => {inputMessage.value = ''}); //clear text input no matter what
     }); 
 
     //The message will also be sent on <Enter>
@@ -29,10 +67,10 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
     switchVoiceToText.addEventListener("change", function() {
         if(switchVoiceToText.checked)
         {
-            s2tClient.startRecording();
+            v2tClient.startRecording();
         }
         else {
-            s2tClient.stopRecording();
+            v2tClient.stopRecording();
         }
     })
 
@@ -41,13 +79,10 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
 
 
 
-    async function s2tCallback(text) {
-        writeInChatBox("[Speech2Text] " + me.name, text);
-        var message = {
-            type: "v2t",
-            text: text
-        }
-        await room.sendMessageToParticipant(message);
+    async function v2tCallback(msg) {
+        var msg = new chatMessage(me.name, msg, 'v2t');
+        msg.writeInChatBox();
+        msg.sendToOthers();
     }
 
     fetch(config.host + '/getSingle?roomId=' + urlParams.get('roomId'))
@@ -59,7 +94,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
                 audio:true,
                 video:true,
                 name: urlParams.get('userName')
-                //hdVideo: false
             });
             
 
@@ -67,7 +101,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
 
             //setup voice recognition
             var localMedia = me.mediaStream;
-            s2tClient = new voiceClient(s2tCallback, config.s2tHost, localMedia);
+            v2tClient = new voiceClient(v2tCallback, config.v2tHost, localMedia);
             
             language = urlParams.get('userLanguage');
             document.title = urlParams.get('userName');
@@ -77,24 +111,29 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
             
             room.on('participantJoined', async participant =>
             {
-                writeInChatBox('[System]', participant.name + ' joined.');
+                var msg = new chatMessage('[System]', participant.name + ' joined', 'sys');
+                msg.writeInChatBox();
+                msg.sendToOthers();
+
                 render(participant);
             });
 
 
             room.on('participantLeft', participant => {
-                writeInChatBox('[System]', participant.name + ' left.');
+                var msg = new chatMessage('[System]', participant.name + ' left', 'sys');
+                msg.writeInChatBox();
+                msg.sendToOthers();
+                
                 document.getElementById('video_' + participant.name + '_' + participant.address).remove();
             });
 
-            room.on('messageReceived', (participant, data) => {
-                var type = data.type == 'v2t' ? '[Speech2Text]' : 
-                           data.type == 'sys' ? '[System]' : '';
-                writeInChatBox(type + ' ' + participant.name, data.text);
-                /**
-                 * @DanT
-                 */
-                //writeInChatBox(participant.name, participant.language, data); //participant.language missing from API, could be implemented in next versions
+            room.on('messageReceived', (participant, msg) => {
+
+                //We have to copy it here, the methods are lost on send/recv :(
+                if(msg) {
+                    var rcvdMsg = new chatMessage(msg.sender, msg.text, msg.type, msg.language);
+                    rcvdMsg.writeInChatBox();
+                }
             });
 
             window.onbeforeunload = function(){
@@ -135,15 +174,16 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
 
 
 
-    function writeInChatBox(prefix, prefix2, message)
-    {
-        var p2 = null;
-        if (prefix2 == null){
-            p2 = "";
-        } else {
-            p2 = "[" + prefix2 + "]";
-        }
-        textAreaChat.value += prefix + p2 + "[txt]: " + message + "\n";
-    }
+    // function writeInChatBox(prefix, message)
+    // {
+
+    //     // var p2 = null;
+    //     // if (prefix2 == null){
+    //     //     p2 = "";
+    //     // } else {
+    //     //     p2 = "[" + prefix2 + "]";
+    //     // }
+    //     // textAreaChat.value += prefix + p2 + "[txt]: " + message + "\n";
+    // }
 
 });

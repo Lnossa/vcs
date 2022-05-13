@@ -1,8 +1,8 @@
 define(['/socket.io-client/dist/socket.io.js'], function(io) {
 
     class voiceClient {
-        constructor(s2tCallback, socketAddress = null, mediaStream = null) {
-            this.s2tCallback = s2tCallback;
+        constructor(v2tCallback, socketAddress = null, mediaStream = null) {
+            this.v2tCallback = v2tCallback;
             this.socketAddress = socketAddress
             this.mediaStream = mediaStream;
             this.streamIsExternal = mediaStream ? true : false;
@@ -37,7 +37,7 @@ define(['/socket.io-client/dist/socket.io.js'], function(io) {
                 });
                 
                 this.socket.on('recognize', (results) => {
-                    this.s2tCallback(results.text);
+                    this.v2tCallback(results.text);
                 });
             }
             else {

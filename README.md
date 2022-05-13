@@ -13,10 +13,10 @@
  
 ##### Deepspeech
 
- 1. Download A.I. models and place them under `/Voice2Speech/DeepSpeech/aiModels`  
+ 1. Download A.I. models and place them under `/Voice2Text/DeepSpeech/aiModels`  
      * https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
      * https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
  2. Run `npm install` again to get all the additional packages
- 3. Launch the voice server by running `cd /Voice2Speech/DeepSpeech` and `node DeepSpeech.js`
+ 3. Launch the voice server by running `cd /Voice2Text/DeepSpeech` and `node DeepSpeech.js`
  4. Launch main application (see above)
 

@@ -12,6 +12,8 @@ package-lock.json
 client/js/clientConfig.js
 src/apiConfig.js
 cert/*
+Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.pbmm
+Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.scorer
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -134,5 +136,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-Voice2Speech/DeepSpeech/aiModels/deepspeech-0.9.3-models.pbmm
-Voice2Speech/DeepSpeech/aiModels/deepspeech-0.9.3-models.scorer
+
