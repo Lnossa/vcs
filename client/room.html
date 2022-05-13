@@ -17,7 +17,7 @@
             height: 100%;
             margin: 0;
             border-collapse: collapse;
-            font-family:verdana;
+            font-family: verdana;
             background-image: url("/img/sky-wallpapers.jpg");
             background-position: center;
             background-repeat: no-repeat;
@@ -30,7 +30,7 @@
 
         .atos-logo {
             position: absolute;
-            float:left;
+            float: left;
             margin: 10px;
         }
 
@@ -43,35 +43,31 @@
 </head>
 
 <body>
-    <div class="atos-logo"> <img src="img/atos-logo-white.png"> </div>
-    <div class="container">
+    <div class="container container-fluid py-3 d-flex flex-column h-100">
+        <nav class="navbar navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="img/atos-logo-white.png" alt="">
+                </a>
+            </div>
+        </nav>
         <div class="row h-100">
-            <div class="row" style="margin-top:auto;margin-bottom:auto;">
+            <div class="row">
                 <div class="col-sm-10">
                     <div class="row" id="divOtherParticipants">
                     </div>
-                    <div class="row" id="divMe" style="margin-top:0em;">
+                    <div class="row" id="divMe">
                     </div>
                 </div>
                 <div class="col-sm-2" id="divChat">
-                    <div class="card" style="width: 24rem; margin-top:auto; margin-bottom:auto; position: relative; float:left;">
+                    <div class="card" style="width:18em; margin-top:auto; margin-bottom:auto; position: relative; float:left;">
                         <div class="card-body">
-                          <h5 class="card-title">Room chat</h5>
-                          
-                          <textarea id="textAreaChat" class="form-control" rows="18"  style="resize: none;" readonly></textarea>
+                            <h5 class="card-title">Room chat</h5>
 
-                          
-
-                          <div class="input-group mb-2" style="margin-top:1em;">
-                            <input type="text" class="form-control" id="textSendMessage" placeholder="Your message..">
-                            <div class="input-group-append">
-                                <button id="btnSendMessage" class="input-group-text">></div>
-                              </div>
-                          </div>
-
-
-                            <textarea id="textAreaChat" class="form-control" rows="20" style="resize: none;"
+                            <textarea id="textAreaChat" class="form-control" rows="14" style="resize: none;"
                                 readonly></textarea>
+
+
 
                             <div class="input-group mb-2" style="margin-top:1em;">
                                 <input type="text" class="form-control" id="textSendMessage"
@@ -80,6 +76,7 @@
                                     <button id="btnSendMessage" class="input-group-text">>
                                 </div>
                             </div>
+
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="switchVoiceToText">
                                 <label class="form-check-label" for="switchVoiceToText">Speech to Text</label>
@@ -89,9 +86,10 @@
                 </div>
             </div>
         </div>
+        <footer class="footer mt-auto">
+            <div class="text-center p-3">© 2022 Copyright: Hackathon - 4Kronstadt</div>
+        </footer>
     </div>
-    </div>
-    <div id="copyright">Hackathon 2022 - 4Kronstadt</div>
 </body>
 <script src="/js/vcs.js"></script>
 
