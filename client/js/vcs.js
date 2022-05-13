@@ -56,7 +56,7 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
             });
 
             room.on('messageReceived', (participant, data) => {
-                writeInChatBox(participant.name, participant.language, data);
+                writeInChatBox(participant.name, participant.language, data); //participant.language missing from API, could be implemented in next versions
             });
 
             window.onbeforeunload = function(){
@@ -99,7 +99,13 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
 
     function writeInChatBox(prefix, prefix2, message)
     {
-        textAreaChat.value += prefix + "[" + prefix2 + "]: " + message + "\n";
+        var p2 = null;
+        if (prefix2 == null){
+            p2 = "";
+        } else {
+            p2 = "[" + prefix2 + "]";
+        }
+        textAreaChat.value += prefix + p2 + "[txt]: " + message + "\n";
     }
 
 });
