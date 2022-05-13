@@ -1,16 +1,22 @@
-requirejs(['/js/clientConfig.js'], function(clientConfig) {
+requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceClient) {
 
 
     var me = null;
     var room = null;
+    var s2tClient = null;
     var inputMessage = document.getElementById("textSendMessage");
     var btnSendMessage = document.getElementById("btnSendMessage");
     var textAreaChat = document.getElementById("textAreaChat");
+    var switchVoiceToText = document.getElementById("switchVoiceToText");
 
-    btnSendMessage.addEventListener("click", async function(event) {
+    btnSendMessage.addEventListener("click", async function() {
         writeInChatBox(me.name, inputMessage.value)
-        await room.sendMessageToParticipant(inputMessage.value);
+        var message = {
+            type: 'text',
+            text: inputMessage.value
+        };
         inputMessage.value = '';
+        await room.sendMessageToParticipant(message);
     }); 
 
     //The message will also be sent on <Enter>
@@ -20,47 +26,73 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
         }
     }); 
 
+    switchVoiceToText.addEventListener("change", function() {
+        if(switchVoiceToText.checked)
+        {
+            s2tClient.startRecording();
+        }
+        else {
+            s2tClient.stopRecording();
+        }
+    })
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    
 
-    fetch(clientConfig.host + '/getSingle?roomId=' + urlParams.get('roomId'))
+
+    async function s2tCallback(text) {
+        writeInChatBox("[Speech2Text] " + me.name, text);
+        var message = {
+            type: "v2t",
+            text: text
+        }
+        await room.sendMessageToParticipant(message);
+    }
+
+    fetch(config.host + '/getSingle?roomId=' + urlParams.get('roomId'))
         .then(response => {return response.json()})
         .then(async returnedRoom => {
             token = returnedRoom.token;
 
             room = await RealtimeSdk.joinRoom(token, {
-                audio:false,
+                audio:true,
                 video:true,
                 name: urlParams.get('userName')
             });
             
+
             me = room.localParticipant;
+
+            //setup voice recognition
+            var localMedia = me.mediaStream;
+            s2tClient = new voiceClient(s2tCallback, config.s2tHost, localMedia);
+            
 
             render(room.localParticipant);
             room.remoteParticipants.forEach(render);
             
             room.on('participantJoined', async participant =>
             {
-                console.log(participant.name + ' joined.');
+                writeInChatBox('[System]', participant.name + ' joined.');
                 render(participant);
             });
 
 
             room.on('participantLeft', participant => {
+                writeInChatBox('[System]', participant.name + ' left.');
                 document.getElementById('video_' + participant.name + '_' + participant.address).remove();
-                console.log(participant.name + ' left.');
             });
 
             room.on('messageReceived', (participant, data) => {
-                writeInChatBox(participant.name, data);
+                var type = data.type == 'v2t' ? '[Speech2Text]' : 
+                           data.type == 'sys' ? '[System]' : '';
+                writeInChatBox(type + ' ' + participant.name, data.text);
             });
 
             window.onbeforeunload = function(){
                 room.leave();
               };
-
         });
 
 
