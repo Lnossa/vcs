@@ -34,12 +34,13 @@ var populateTable = function() {
 
                 
                 indexCell.innerHTML = index;
+                indexCell.setAttribute('style', 'text-align:center;');
                 nameCell.innerHTML = room.name;
                 descCell.innerHTML = room.description;
-                joinCell.appendChild(createButton('Join', room.id, room.name));
+                joinCell.appendChild(createButton('Join', room.id, room.name, ""));
                 joinCell.setAttribute('style', 'text-align:center;');
                 joinCell.setAttribute('class', 'col-sm-1');
-                delCell.appendChild(createButton('Delete', room.id, room.name));
+                delCell.appendChild(createButton('Delete', room.id, room.name, room.language));
                 delCell.setAttribute('style', 'text-align:center;');
                 delCell.setAttribute('class', 'col-sm-1');
 
@@ -51,7 +52,7 @@ var populateTable = function() {
 };
 
 
-var createButton = function(btnType, id, name) {
+var createButton = function(btnType, id, name, language) {
 
     let btn = document.createElement('icon');
     btn.setAttribute('type', 'button');
@@ -61,7 +62,6 @@ var createButton = function(btnType, id, name) {
     else if(btnType == 'Join')
         btn.setAttribute('class', 'bi bi-telephone-plus-fill text-info');
 
-    //btn.innerHTML = btnType;
     btn.onclick = function () {
         if(btnType == 'Delete')
         {
@@ -73,7 +73,8 @@ var createButton = function(btnType, id, name) {
         }
         if(btnType == 'Join')
         {
-            document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + name)            
+            document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + name);
+            document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + language);
             document.getElementById('roomId').value = id;            
             $('#joinRoomModal').modal('show');
         }

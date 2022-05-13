@@ -59,6 +59,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
                 audio:true,
                 video:true,
                 name: urlParams.get('userName')
+                //hdVideo: false
             });
             
 
@@ -68,6 +69,8 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
             var localMedia = me.mediaStream;
             s2tClient = new voiceClient(s2tCallback, config.s2tHost, localMedia);
             
+            language = urlParams.get('userLanguage');
+            document.title = urlParams.get('userName');
 
             render(room.localParticipant);
             room.remoteParticipants.forEach(render);
@@ -88,6 +91,10 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
                 var type = data.type == 'v2t' ? '[Speech2Text]' : 
                            data.type == 'sys' ? '[System]' : '';
                 writeInChatBox(type + ' ' + participant.name, data.text);
+                /**
+                 * @DanT
+                 */
+                //writeInChatBox(participant.name, participant.language, data); //participant.language missing from API, could be implemented in next versions
             });
 
             window.onbeforeunload = function(){
@@ -118,7 +125,8 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
 
         const titleDiv = document.createElement('h5');
         titleDiv.className = 'card-title';
-        titleDiv.innerHTML = participant.name;
+        if (participant.name == null) {participant.name = "noName"}
+        titleDiv.innerHTML = participant.name +  " from " + language.toUpperCase();
         bodyDiv.appendChild(titleDiv);
 
 
@@ -127,9 +135,15 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function(config, voiceC
 
 
 
-    function writeInChatBox(prefix, message)
+    function writeInChatBox(prefix, prefix2, message)
     {
-        textAreaChat.value += prefix + ": " + message + "\n";
+        var p2 = null;
+        if (prefix2 == null){
+            p2 = "";
+        } else {
+            p2 = "[" + prefix2 + "]";
+        }
+        textAreaChat.value += prefix + p2 + "[txt]: " + message + "\n";
     }
 
 });

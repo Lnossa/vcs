@@ -1,7 +1,7 @@
 const config = {
     vcsApi: {
         host:'sandbox.virtualcareservices.net',
-        key: '<your API key here>'
+        key: '04hMJ83KXK7d2oQgTCKuuxUx'
     }
    };
    
