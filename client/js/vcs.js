@@ -8,7 +8,7 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
     var textAreaChat = document.getElementById("textAreaChat");
 
     btnSendMessage.addEventListener("click", async function(event) {
-        writeInChatBox(me.name, inputMessage.value)
+        writeInChatBox(me.name, language, inputMessage.value)
         await room.sendMessageToParticipant(inputMessage.value);
         inputMessage.value = '';
     }); 
@@ -23,8 +23,6 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    
-
     fetch(clientConfig.host + '/getSingle?roomId=' + urlParams.get('roomId'))
         .then(response => {return response.json()})
         .then(async returnedRoom => {
@@ -34,16 +32,20 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
                 audio:false,
                 video:true,
                 name: urlParams.get('userName')
+                //hdVideo: false
             });
             
             me = room.localParticipant;
+
+            language = urlParams.get('userLanguage');
+            document.title = urlParams.get('userName');
 
             render(room.localParticipant);
             room.remoteParticipants.forEach(render);
             
             room.on('participantJoined', async participant =>
             {
-                console.log(participant.name + ' joined.');
+                console.log(participant.name + '(' + participant.language + ') joined.');
                 render(participant);
             });
 
@@ -54,13 +56,12 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
             });
 
             room.on('messageReceived', (participant, data) => {
-                writeInChatBox(participant.name, data);
+                writeInChatBox(participant.name, participant.language, data);
             });
 
             window.onbeforeunload = function(){
                 room.leave();
               };
-
         });
 
 
@@ -86,7 +87,8 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
 
         const titleDiv = document.createElement('h5');
         titleDiv.className = 'card-title';
-        titleDiv.innerHTML = participant.name;
+        if (participant.name == null) {participant.name = "noName"}
+        titleDiv.innerHTML = participant.name +  " from " + language.toUpperCase();
         bodyDiv.appendChild(titleDiv);
 
 
@@ -95,9 +97,9 @@ requirejs(['/js/clientConfig.js'], function(clientConfig) {
 
 
 
-    function writeInChatBox(prefix, message)
+    function writeInChatBox(prefix, prefix2, message)
     {
-        textAreaChat.value += prefix + ": " + message + "\n";
+        textAreaChat.value += prefix + "[" + prefix2 + "]: " + message + "\n";
     }
 
 });
