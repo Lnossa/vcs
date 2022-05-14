@@ -35,7 +35,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
             //Use the token to join the room
             room = await RealtimeSdk.joinRoom(returnedRoom.token, {
-                audio: false,
+                audio: true,
                 video: false,
                 name: urlParams.get('userName'),
                 participantInfo: {
@@ -85,6 +85,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             //Runs when a remote stream is updated
             room.on('remoteStream', (participant, msg) => {
                 render(participant);
+                console.log(participant);
             });
 
             //Runs when you leave
@@ -137,12 +138,12 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         if (bHasVideo) {
 
             videoDiv = document.createElement('div');
-            participant.attach(videoDiv);
         }
         else {
             videoDiv = document.createElement('img'); 2
             videoDiv.src = '/img/user.png'
         }
+        participant.attach(videoDiv);
         videoDiv.className = 'card-img-top';
         cardDiv.appendChild(videoDiv);
 
@@ -219,9 +220,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
      */
 
     btnMute.addEventListener("click", async function () {
-        await room.toggleMute().catch((e) => {
-            console.log("Error on mute: '" + e + "'");
-        });
+        await room.toggleMute()
         updateButtons();
     });
 
