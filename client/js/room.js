@@ -4,24 +4,35 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     var me = null;
     var room = null;
     var v2tClient = null;
+    var roomState = null;
+
+    //Document elements
     var inputMessage = document.getElementById("textSendMessage");
     var btnSendMessage = document.getElementById("btnSendMessage");
     var textAreaChat = document.getElementById("textAreaChat");
     var switchVoiceToText = document.getElementById("switchVoiceToText");
 
+    var btnMute = document.getElementById('toggle-mute');
+    var btnVideo = document.getElementById('toggle-video');
+    var btnAudio = document.getElementById('toggle-audio');
+    var btnLeave = document.getElementById('leave-button');
+
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
     /**
+     * ======================================================================================
      * This is the main function in this document: 
      * It gets the room token by using the room ID, it connects to the room 
      * using the newly aquired token and finally, it renders the participants
      * and sets up all the WebRTC features
+     * ======================================================================================
      */
     fetch(config.host + '/getSingle?roomId=' + urlParams.get('roomId'))
         .then(response => { return response.json() })
         .then(async returnedRoom => {
-            
+
             //Use the token to join the room
             room = await RealtimeSdk.joinRoom(returnedRoom.token, {
                 audio: false,
@@ -32,16 +43,14 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
                 }
             });
 
-            //We'll need this later, so save it in a 
-            //global variable after joining the room
+            //Update button states (mute/audio/video)
+            updateButtons();
+
+            //We'll need these later, so save them in  
+            //global variables after joining the room
             me = room.localParticipant;
-
-
-            //Setup voice to text
-            var localMedia = me.mediaStream;
-            v2tClient = new voiceClient(v2tCallback, config.v2tHost, localMedia);
-
             
+
             //Render yourself + all the other participants
             render(room.localParticipant);
             room.remoteParticipants.forEach(render);
@@ -73,10 +82,14 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
                 }
             });
 
+            //Runs when a remote stream is updated
+            room.on('remoteStream', (participant, msg) => {
+                render(participant);
+            });
 
             //Runs when you leave
             window.onbeforeunload = function () {
-                if(room) 
+                if (room)
                     room.leave();
             };
         });
@@ -85,65 +98,84 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     /**
      * Shows user card
      * @param {*} participant 
+     * @description this creates a bootstrap card (https://getbootstrap.com/docs/4.0/components/card/)
+     * and shows the user video and name inside it
      */
     function render(participant) {
 
-        var bHasVideo = participant.mediaStream ? participant.mediaStream.getVideoTracks().length > 0 : false;
-
+        //Where will the participant be rendered?
         var targetDiv = document.getElementById('divOtherParticipants');
-
         if (participant.name == me.name &&
             participant.address == me.address) {
             targetDiv = document.getElementById('divMe');
         }
 
+        //If the participant is already rendered remove it first
+        const participantDivId = 'video_' + participant.name + '_' + participant.address;
+
+        if(document.getElementById(participantDivId)) {
+            document.getElementById(participantDivId).remove();
+        }
+
+        //Video ?
+        var bHasVideo = participant.mediaStream ? participant.mediaStream.getVideoTracks().length > 0 : false;
+
+
+        //Create a container div. This will have a unique ID - participantDivId
         const contDiv = document.createElement('div');
         contDiv.className = "col-lg-4";
+        contDiv.id = participantDivId;
 
+        //Create a card div inside the container.
         const cardDiv = document.createElement('div');
-        cardDiv.id = 'video_' + participant.name + '_' + participant.address;
         cardDiv.className = 'card bg-light text-center';
         contDiv.appendChild(cardDiv);
 
+        //Create a video div inside the card div
+        //This can be a normal div (for video), or an image (for static content - video off)
         var videoDiv = null;
-        
-
         if (bHasVideo) {
 
-            videoDiv= document.createElement('div');
-            participant.attach(videoDiv);        
+            videoDiv = document.createElement('div');
+            participant.attach(videoDiv);
         }
-        else
-        {
-            videoDiv = document.createElement('img');2
+        else {
+            videoDiv = document.createElement('img'); 2
             videoDiv.src = '/img/user.png'
-            // videoDiv.width = "200";
-            // videoDiv.height = "200";
         }
-        videoDiv.className='card-img-top';
-        cardDiv.appendChild(videoDiv); 
+        videoDiv.className = 'card-img-top';
+        cardDiv.appendChild(videoDiv);
 
-
+        //Create a body div for the card
         const bodyDiv = document.createElement('div');
         bodyDiv.className = 'card-body';
         cardDiv.appendChild(bodyDiv);
 
+        //Create a title div and place it inside the body
         const titleDiv = document.createElement('h5');
         titleDiv.className = 'card-title';
         if (participant.name == null) { participant.name = "noName" }
         titleDiv.innerHTML = participant.name + " [" + participant.participantInfo.language.toUpperCase() + "]";
         bodyDiv.appendChild(titleDiv);
 
-
+        //Append everything to the target div
         targetDiv.appendChild(contDiv);
 
-        if(bHasVideo)
+
+        //Final touches to make sure everything looks good
+        if (bHasVideo)
             participant.videoEl.style = "width:90%;margin:auto;margin-top:1em;border-radius:10px;";
         else
             videoDiv.style = 'height:200px;width:200px;margin:auto;'
     }
 
 
+    /**
+     * ======================================================================================
+     * This is where document (HTML) functionality is added. 
+     * All button actions are implemented here 
+     * ======================================================================================
+     */
 
 
     //Send message when the send button is clicked
@@ -152,9 +184,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         msg.send()
             .catch(e => console.log("Failed to send message: '" + e + "'"))
             .finally(() => { inputMessage.value = '' });
-        //try { await room.sendMessageToParticipant(inputMessage.value); }
-        //catch { console.log('No participant found to send message') }
-        //finally { inputMessage.value = ''; }
     });
 
     //The message will also be sent on <Enter>
@@ -166,13 +195,100 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
     //Start/stop the voice 2 text recording on flipping the switch
     switchVoiceToText.addEventListener("change", function () {
-        if (switchVoiceToText.checked) {
-            v2tClient.startRecording();
+        if(room.hasAudio())
+        {
+            //Get local stream and setup voice to text
+            var localMedia = me.mediaStream;
+            v2tClient = new voiceClient(v2tCallback, config.v2tHost, localMedia);
+
+            if (switchVoiceToText.checked) {
+                v2tClient.startRecording();
+            }
+            else {
+                v2tClient.stopRecording();
+            }
         }
         else {
-            v2tClient.stopRecording();
+            switchVoiceToText.checked = false;
         }
     });
+
+
+    /**
+     * Mute/Audio/Video buttons behaviour
+     */
+
+    btnMute.addEventListener("click", async function () {
+        await room.toggleMute().catch((e) => {
+            console.log("Error on mute: '" + e + "'");
+        });
+        updateButtons();
+    });
+
+    btnAudio.addEventListener("click", async function () {
+        await room.toggleAudio().catch((e) => {
+            console.log("Audio stream error: '" + e + "'");
+        });
+        updateButtons();
+    });
+
+    btnVideo.addEventListener("click", async function() {
+        await room.toggleVideo().catch((e) => {
+            console.log("Video stream error: '" + e + "'");
+        });
+        updateButtons();
+    });
+
+    btnLeave.addEventListener("click", async function () {
+        room.leave();
+
+        //room.leave() won't return anything, so we don't know when it's done with its processing
+        //so I had to come up with this supid thing: 
+        setTimeout(function(){
+            window.location.href = config.host;
+        }, 500);
+    });
+
+
+    //Change button graphics depending on room state
+    function updateButtons() {
+        if (room.isMuted()) {
+            btnMute.firstElementChild.className = 'bi-mic-mute-fill text-danger';
+            btnAudio.title='Unmute audio';
+        }
+        else {
+            btnMute.firstElementChild.className = 'bi-mic-fill';
+            btnAudio.title='Mute audio';
+        }
+
+        if (room.hasAudio()) {
+            btnAudio.firstElementChild.className = 'bi bi-volume-up-fill text-info';
+            btnAudio.title = 'Disable audio';
+            btnMute.disabled = false;
+        }
+        else {
+            btnAudio.firstElementChild.className = 'bi bi-volume-mute-fill';
+            btnAudio.title = 'Enable audio';
+            btnMute.disabled = true;
+        }
+
+        if (room.hasVideo()) {
+            btnVideo.firstElementChild.className = 'bi-camera-video-off-fill text-info';
+            btnVideo.title = 'Disable video';
+        }
+        else {
+            btnVideo.firstElementChild.className = 'bi-camera-video-fill'; 
+            btnVideo.title = 'Enable video';
+        }
+    }
+
+
+
+     /**
+     * ======================================================================================
+     * Auxilliary stuff
+     * ======================================================================================
+     */
 
 
     /**
@@ -235,30 +351,4 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             await room.sendMessageToParticipant(this);
         }
     }
-    $('#toggle-mic').click(function () {
-        const muted = room.isMuted();
-        $(this).find('i').toggleClass('bi-mic-mute-fill').toggleClass('bi-mic-fill');
-    });
-
-    $('#toggle-video').click(function () {
-        try {
-            document.querySelector('#localVideo').srcObject = room.localParticipant.mediaStream;
-            const hasVideo = room.hasVideo();
-            $(this).find('i').toggleClass('bi-camera-video-off-fill').toggleClass('bi-camera-video-fill');
-        }
-        catch (err) {
-            console.log('User does not have a webcam available')
-        }
-    });
-
-    $('#toggle-audio').click(async function () {
-        const hasAudio = await room.toggleAudio();
-        $(this).find('i').toggleClass('fa-volume-off').toggleClass('fa-volume-up');
-    });
-
-    $('#leave-button').click(function () {
-        room.leave();
-        window.open(config.host, "_self");
-        $(this).find('i').toggleClass('fa-volume-off').toggleClass('fa-volume-up');
-    });
 });
