@@ -34,6 +34,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         .then(response => { return response.json() })
         .then(async returnedRoom => {
 
+        try {
             //Use the token to join the room
             room = await RealtimeSdk.joinRoom(returnedRoom.token, {
                 audio: true,
@@ -43,6 +44,9 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
                     language: urlParams.get('userLanguage')
                 }
             });
+        } catch (err) {
+                alert(err);
+        }
 
             //Update button states (mute/audio/video)
             updateButtons();
