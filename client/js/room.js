@@ -269,6 +269,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             btnAudio.firstElementChild.className = 'bi bi-volume-mute-fill';
             btnAudio.title = 'Enable audio';
             btnMute.disabled = true;
+            btnMute.firstElementChild.className = 'bi-mic-mute-fill';
         }
 
         if (room.hasVideo()) {
