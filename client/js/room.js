@@ -24,7 +24,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             
             //Use the token to join the room
             room = await RealtimeSdk.joinRoom(returnedRoom.token, {
-                audio: true,
+                audio: false,
                 video: false,
                 name: urlParams.get('userName'),
                 participantInfo: {
@@ -152,6 +152,9 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         msg.send()
             .catch(e => console.log("Failed to send message: '" + e + "'"))
             .finally(() => { inputMessage.value = '' });
+        //try { await room.sendMessageToParticipant(inputMessage.value); }
+        //catch { console.log('No participant found to send message') }
+        //finally { inputMessage.value = ''; }
     });
 
     //The message will also be sent on <Enter>
@@ -232,4 +235,30 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             await room.sendMessageToParticipant(this);
         }
     }
+    $('#toggle-mic').click(function () {
+        const muted = room.isMuted();
+        $(this).find('i').toggleClass('bi-mic-mute-fill').toggleClass('bi-mic-fill');
+    });
+
+    $('#toggle-video').click(function () {
+        try {
+            document.querySelector('#localVideo').srcObject = room.localParticipant.mediaStream;
+            const hasVideo = room.hasVideo();
+            $(this).find('i').toggleClass('bi-camera-video-off-fill').toggleClass('bi-camera-video-fill');
+        }
+        catch (err) {
+            console.log('User does not have a webcam available')
+        }
+    });
+
+    $('#toggle-audio').click(async function () {
+        const hasAudio = await room.toggleAudio();
+        $(this).find('i').toggleClass('fa-volume-off').toggleClass('fa-volume-up');
+    });
+
+    $('#leave-button').click(function () {
+        room.leave();
+        window.open(config.host, "_self");
+        $(this).find('i').toggleClass('fa-volume-off').toggleClass('fa-volume-up');
+    });
 });
