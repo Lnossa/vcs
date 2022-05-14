@@ -18,9 +18,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     var btnAudio = document.getElementById('toggle-audio');
     var btnLeave = document.getElementById('leave-button');
 
-    var room_name = null;
-
-
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
