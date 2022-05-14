@@ -5,7 +5,8 @@
 
 ##### Main application
 
- 1. Install nodejs v15.14.0 - https://nodejs.org/download/release/v15.14.0/  
+ 1. Install nodejs v15.14.0 - https://nodejs.org/download/release/v15.14.0/ 
+    * Download the installer (msi) and make sure you select `Automatically install the necessary tools..` during the instalation process
  2. Get the code: `git clone https://github.com/Lnossa/vcs`  
  3. Get all the dependencies: `npm install`  
  4. Add your api key to `src/apiConfig.js` and change localhost to IP in `client/js/clientConfig.js`
@@ -13,6 +14,7 @@
  
 ##### Deepspeech
 
+ 1. If you haven't selected the 'Install necessary tols' options during the node installation process, you need to run the `install_tools.bat` script that can be found under `Program Files\nodejs\`
  1. Download A.I. models and place them under `/Voice2Text/DeepSpeech/aiModels`  
      * https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
      * https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
