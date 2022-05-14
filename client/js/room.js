@@ -272,11 +272,11 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         }
 
         if (room.hasVideo()) {
-            btnVideo.firstElementChild.className = 'bi-camera-video-off-fill text-info';
+            btnVideo.firstElementChild.className = 'bi-camera-video-fill text-info';
             btnVideo.title = 'Disable video';
         }
         else {
-            btnVideo.firstElementChild.className = 'bi-camera-video-fill'; 
+            btnVideo.firstElementChild.className = 'bi-camera-video-off-fill'; 
             btnVideo.title = 'Enable video';
         }
     }
