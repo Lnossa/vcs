@@ -115,7 +115,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         }
         else
         {
-            videoDiv = document.createElement('img');
+            videoDiv = document.createElement('img');2
             videoDiv.src = '/img/user.png'
             // videoDiv.width = "200";
             // videoDiv.height = "200";
@@ -179,7 +179,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
      */
     async function v2tCallback(msg) {
         var msg = new chatMessage(me.name, msg, 'v2t');
-        msg.sendToOthers();
+        msg.send();
     }
 
 
