@@ -11,6 +11,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     var btnSendMessage = document.getElementById("btnSendMessage");
     var textAreaChat = document.getElementById("textAreaChat");
     var switchVoiceToText = document.getElementById("switchVoiceToText");
+    var switchVoiceToText_txt  = document.getElementById("switchVoiceToText_txt");
 
     var btnMute = document.getElementById('toggle-mute');
     var btnVideo = document.getElementById('toggle-video');
@@ -204,9 +205,11 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         {
             if (switchVoiceToText.checked) {
                 v2tClient.startRecording();
+                switchVoiceToText_txt.style.color = "blue";
             }
             else {
                 v2tClient.stopRecording();
+                switchVoiceToText_txt.style.color = "black";
             }
         }
         else {
@@ -264,12 +267,20 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             btnAudio.firstElementChild.className = 'bi bi-volume-up-fill text-info';
             btnAudio.title = 'Disable audio';
             btnMute.disabled = false;
+
+            switchVoiceToText.disabled = false;
+            switchVoiceToText_txt.style.color = "black";
         }
         else {
             btnAudio.firstElementChild.className = 'bi bi-volume-mute-fill';
             btnAudio.title = 'Enable audio';
             btnMute.disabled = true;
             btnMute.firstElementChild.className = 'bi-mic-mute-fill';
+
+            switchVoiceToText.checked = false;
+            switchVoiceToText.disabled = true;
+            v2tClient.stopRecording();
+            switchVoiceToText_txt.style.color = "gray";
         }
 
         if (room.hasVideo()) {
