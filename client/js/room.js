@@ -253,11 +253,11 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     function updateButtons() {
         if (room.isMuted()) {
             btnMute.firstElementChild.className = 'bi-mic-mute-fill text-danger';
-            btnAudio.title='Unmute audio';
+            btnMute.title='Unmute audio';
         }
         else {
-            btnMute.firstElementChild.className = 'bi-mic-fill';
-            btnAudio.title='Mute audio';
+            btnMute.firstElementChild.className = 'bi-mic-fill text-info';
+            btnMute.title='Mute audio';
         }
 
         if (room.hasAudio()) {
