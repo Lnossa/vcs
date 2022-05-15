@@ -2,6 +2,7 @@ var fs = require('fs');
 var https = require('https');
 var express = require('express');
 var roomApi = require('./src/roomApi');
+var googleTranslate = require('./GoogleTranslate/translate');
 
 const SERVER_PORT = 8000;
 
@@ -116,8 +117,7 @@ app.post('/create', async function(req,res){
 
 // Delete room
 app.get('/delete', async function(req,res){
-    if(req.query.id)
-    {
+    if(req.query.id) {
         await roomApi.delete(req.query.id);
     }
 
@@ -125,5 +125,24 @@ app.get('/delete', async function(req,res){
     res.writeHead(302, {
         'Location': '/'
     });
+    res.end();
+});
+
+//Translate text
+app.get('/translate', async function(req, res){
+    
+    var translationResult = '';
+    
+    if(req.query.text && req.query.from && req.query.to) {
+        translationResult = await googleTranslate.translateText(req.query.text, req.query.from, req.query.to);
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(translationResult));
+    }
+    else {
+        res.writeHead(400);
+        res.write('Bad request!');        
+    }
+
+
     res.end();
 });
