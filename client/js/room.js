@@ -44,7 +44,11 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
                     }
                 });
             } catch (err) {
+                console.log(err);
                 alert(err);
+                setTimeout(function () {
+                    window.location.href = config.host;
+                }, 500);
             }
 
             console.log("joined to " + room.name);
@@ -272,7 +276,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             window.location.href = config.host;
         }, 500);
     });
-
 
     //Change button graphics depending on room state
     function updateButtons() {
