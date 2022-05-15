@@ -241,7 +241,10 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     });
 
     btnVideo.addEventListener("click", async function() {
-        await room.toggleVideo().catch((e) => {
+        await room.toggleVideo()
+        .then(function (){
+            render(room.localParticipant);
+        }).catch((e) => {
             console.log("Video stream error: '" + e + "'");
         });
         updateButtons();
