@@ -12,16 +12,13 @@ const SERVER_PORT = 4000; // websocket server port
 const VAD_MODE = VAD.Mode.NORMAL;
 const vad = new VAD(VAD_MODE);
 
-//Uncomment ONLY one of these:
-//const v2t = new DeepSpeech();  //Uncomment for Mozilla DeepSpeech
-const v2t = new GoogleS2T(); //Uncomment for Google Speech-To-Text
-
 //Globals
 let recordedChunks = 0;
 let silenceStart = null;
 let endTimeout = null;
+let language = null;
 
-
+let v2t = null;
 
 //************************************************************************************
 //RUN VAD(voice activity detection), then pass the stream to the voice2text processor
@@ -63,7 +60,13 @@ function processAudioStream(data, callback) {
 //Process VAD VOICE
 function processVoice(data) {
 	silenceStart = null;
+
 	if (recordedChunks === 0) {
+        //Uncomment ONLY one of these:
+        //v2t = new DeepSpeech();  //Uncomment for Mozilla DeepSpeech
+        v2t = new GoogleS2T(language); //Uncomment for Google Speech-To-Text    
+        v2t.createStream();
+        
 		console.log('');
 		process.stdout.write('[start]'); // recording started
 	}
@@ -159,9 +162,7 @@ io.on('connection', function(socket) {
 	socket.once('disconnect', () => {
 		console.log('client disconnected');
 	});
-	
-	v2t.createStream();
-	
+		
 	socket.on('stream-data', function(data) {
 		processAudioStream(data, (results) => {
 			socket.emit('recognize', results);
@@ -177,6 +178,12 @@ io.on('connection', function(socket) {
 	socket.on('stream-reset', function() {
 		resetAudioStream();
 	});
+
+
+    socket.on('language', function (lang){
+        language = lang;
+        console.log("language: " + language);
+    });
 });
 
 app.listen(SERVER_PORT, '0.0.0.0', () => {

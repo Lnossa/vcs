@@ -222,7 +222,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         if (room.hasAudio()) {
             if (switchVoiceToText.checked) {
                 //Get local stream and setup voice to text
-                v2tClient = new voiceClient(v2tCallback, config.v2tHost, room.localParticipant.mediaStream);
+                v2tClient = new voiceClient(v2tCallback, config.v2tHost, room.localParticipant.mediaStream, me.participantInfo.language);
                 v2tClient.startRecording();
                 switchVoiceToText_txt.style.color = "blue";
             }

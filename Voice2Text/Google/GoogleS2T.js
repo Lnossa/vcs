@@ -7,11 +7,12 @@ const apiCreds = fs.readFileSync('../Voice2Text/Google/googleApiKey.json');
 
 
 class GoogleS2T {
-	constructor() {
+	constructor(language = 'en-US') {
 		this.recordedAudioLength = 0;
 		this.recordedVoiceLength = 0;
 		this.silenceBuffers = [];
 		this.audioBuffer;
+		this.language = language;
 	}
 
 
@@ -82,7 +83,7 @@ class GoogleS2T {
 	
 		const encoding = 'LINEAR16';
 		const sampleRateHertz = 16000;
-		const languageCode = 'en-US';
+		const languageCode = this.language;
 	
 	
 		const request = {
@@ -102,7 +103,7 @@ class GoogleS2T {
 			.on('data', data => {
 				results.text = data.results[0] && data.results[0].alternatives[0]
 				? data.results[0].alternatives[0].transcript : '';
-				console.log("Recognized: " + results.text);
+				console.log("Recognized (" + languageCode + "): " + results.text);
 				callback(results);
 			});
 

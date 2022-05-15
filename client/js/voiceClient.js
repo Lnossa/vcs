@@ -1,11 +1,12 @@
 define(['/socket.io-client/dist/socket.io.js'], function(io) {
 
     class voiceClient {
-        constructor(v2tCallback, socketAddress = null, mediaStream = null) {
+        constructor(v2tCallback, socketAddress = null, mediaStream = null, language = 'en') {
             this.v2tCallback = v2tCallback;
             this.socketAddress = socketAddress
             this.mediaStream = mediaStream;
             this.streamIsExternal = mediaStream ? true : false;
+            this.language = language;
 
 
             this.socket = null;
@@ -28,6 +29,7 @@ define(['/socket.io-client/dist/socket.io.js'], function(io) {
                 this.socket.on('connect', () => {
                     console.log('socket connected');
                     this.state.connected = true;
+                    this.socket.emit('language', this.language );
                 });
                 
                 this.socket.on('disconnect', () => {
