@@ -11,7 +11,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     var btnSendMessage = document.getElementById("btnSendMessage");
     var textAreaChat = document.getElementById("textAreaChat");
     var switchVoiceToText = document.getElementById("switchVoiceToText");
-    var switchVoiceToText_txt  = document.getElementById("switchVoiceToText_txt");
+    var switchVoiceToText_txt = document.getElementById("switchVoiceToText_txt");
 
     var btnMute = document.getElementById('toggle-mute');
     var btnVideo = document.getElementById('toggle-video');
@@ -33,19 +33,19 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         .then(response => { return response.json() })
         .then(async returnedRoom => {
 
-        try {
-            //Use the token to join the room
-            room = await RealtimeSdk.joinRoom(returnedRoom.token, {
-                audio: true,
-                video: false,
-                name: urlParams.get('userName'),
-                participantInfo: {
-                    language: urlParams.get('userLanguage')
-                }
-            });
-        } catch (err) {
+            try {
+                //Use the token to join the room
+                room = await RealtimeSdk.joinRoom(returnedRoom.token, {
+                    audio: true,
+                    video: false,
+                    name: urlParams.get('userName'),
+                    participantInfo: {
+                        language: urlParams.get('userLanguage')
+                    }
+                });
+            } catch (err) {
                 alert(err);
-        }
+            }
 
             console.log("joined to " + room.name);
             document.title = room.name;
@@ -56,7 +56,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             //We'll need these later, so save them in  
             //global variables after joining the room
             me = room.localParticipant;
-            
+
 
             //Render yourself + all the other participants
             render(room.localParticipant);
@@ -80,11 +80,24 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             });
 
             //Runs when a message is received
-            room.on('messageReceived', (participant, msg) => {
+            room.on('messageReceived', async (participant, msg) => {
 
-                //We have to copy it here, the methods are lost on send/recv :(
-                if (msg) {
-                    var rcvdMsg = new chatMessage(msg.sender, msg.text, msg.type, msg.language);
+                if (msg && msg.text) {
+                    var bTranslate = false;
+                    var message = msg.text;
+                    //Translate?
+                    if (participant.participantInfo.language != me.participantInfo.language) {
+                        bTranslate = true;
+
+                        await fetch('/translate?text=' + msg.text + '&from=' + participant.participantInfo.language + '&to=' + me.participantInfo.language)
+                            .then(response => { return response.json() })
+                            .then(function (res) {
+                                message = res + '<br>&nbsp;(Original: ' + msg.text + ')';
+                            });
+                    }
+
+                    //We have to copy it here, the methods are lost on send/recv :(
+                    var rcvdMsg = new chatMessage(msg.sender, message, msg.type, msg.language);
                     rcvdMsg.writeInChatBoxOnly();
                 }
             });
@@ -92,7 +105,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             //Runs when a remote stream is updated
             room.on('remoteStream', (participant, msg) => {
                 render(participant);
-                console.log(participant);
             });
 
             //Runs when you leave
@@ -121,7 +133,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         //If the participant is already rendered remove it first
         const participantDivId = 'video_' + participant.name + '_' + participant.address;
 
-        if(document.getElementById(participantDivId)) {
+        if (document.getElementById(participantDivId)) {
             document.getElementById(participantDivId).remove();
         }
 
@@ -192,10 +204,12 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
     //Send message when the send button is clicked
     btnSendMessage.addEventListener("click", async function () {
-        const msg = new chatMessage(me.name, inputMessage.value);
-        msg.send()
-            .catch(e => console.log("Failed to send message: '" + e + "'"))
-            .finally(() => { inputMessage.value = '' });
+        if (inputMessage.value.length) {
+            const msg = new chatMessage(me.name, inputMessage.value);
+            msg.send()
+                .catch(e => console.log("Failed to send message: '" + e + "'"))
+                .finally(() => { inputMessage.value = '' });
+        }
     });
 
     //The message will also be sent on <Enter>
@@ -207,8 +221,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
     //Start/stop the voice 2 text recording on flipping the switch
     switchVoiceToText.addEventListener("change", function () {
-        if(room.hasAudio())
-        {
+        if (room.hasAudio()) {
             if (switchVoiceToText.checked) {
                 v2tClient.startRecording();
                 switchVoiceToText_txt.style.color = "blue";
@@ -240,13 +253,13 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         updateButtons();
     });
 
-    btnVideo.addEventListener("click", async function() {
+    btnVideo.addEventListener("click", async function () {
         await room.toggleVideo()
-        .then(function (){
-            render(room.localParticipant);
-        }).catch((e) => {
-            console.log("Video stream error: '" + e + "'");
-        });
+            .then(function () {
+                render(room.localParticipant);
+            }).catch((e) => {
+                console.log("Video stream error: '" + e + "'");
+            });
         updateButtons();
     });
 
@@ -255,7 +268,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
         //room.leave() won't return anything, so we don't know when it's done with its processing
         //so I had to come up with this supid thing: 
-        setTimeout(function(){
+        setTimeout(function () {
             window.location.href = config.host;
         }, 500);
     });
@@ -265,11 +278,11 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     function updateButtons() {
         if (room.isMuted()) {
             btnMute.firstElementChild.className = 'bi-mic-mute-fill text-danger';
-            btnMute.title='Unmute audio';
+            btnMute.title = 'Unmute audio';
         }
         else {
             btnMute.firstElementChild.className = 'bi-mic-fill text-info';
-            btnMute.title='Mute audio';
+            btnMute.title = 'Mute audio';
         }
 
         if (room.hasAudio()) {
@@ -297,18 +310,18 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             btnVideo.title = 'Disable video';
         }
         else {
-            btnVideo.firstElementChild.className = 'bi-camera-video-off-fill'; 
+            btnVideo.firstElementChild.className = 'bi-camera-video-off-fill';
             btnVideo.title = 'Enable video';
         }
     }
 
 
 
-     /**
-     * ======================================================================================
-     * Auxilliary stuff
-     * ======================================================================================
-     */
+    /**
+    * ======================================================================================
+    * Auxilliary stuff
+    * ======================================================================================
+    */
 
 
     /**
@@ -360,6 +373,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             pDiv.innerHTML = this.sender + ": " + this.text;
 
             textAreaChat.appendChild(pDiv);
+            textAreaChat.scrollTop= textAreaChat.scrollHeight;
         }
 
         /**
