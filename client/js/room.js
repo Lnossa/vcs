@@ -202,8 +202,12 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
     //Send message when the send button is clicked
     btnSendMessage.addEventListener("click", async function () {
-        if (inputMessage.value.length) {
-            const msg = new chatMessage(me.name, inputMessage.value);
+        const msg = new chatMessage(me.name, inputMessage.value);
+        if (msg.text == '' || msg.text.trim() == '') {
+            console.log('User try to send empty message...');
+            inputMessage.value = '';
+        }
+        else {
             msg.send()
                 .catch(e => console.log("Failed to send message: '" + e + "'"))
                 .finally(() => { inputMessage.value = '' });
