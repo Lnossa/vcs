@@ -106,7 +106,8 @@ function processSilence(data, callback) {
 	}
 	else {
 		process.stdout.write('.'); // silence detected while not recording
-		v2t.bufferSilence(data);
+		if(v2t)
+			v2t.bufferSilence(data);
 	}
 }
 
