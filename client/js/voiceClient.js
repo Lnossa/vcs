@@ -39,11 +39,20 @@ define(['/socket.io-client/dist/socket.io.js'], function(io) {
                 this.socket.on('recognize', (results) => {
                     this.v2tCallback(results.text);
                 });
+
+                this.socket.on('connect_error', (e) => {
+                    console.log('err');
+                    console.log(e);
+                });
             }
             else {
                 console.log('No socket address!');
             }
 
+        }
+
+        socketDisconnect() {
+            this.socket.disconnect();
         }
 
         startRecording() {

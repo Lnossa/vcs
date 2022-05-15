@@ -13,8 +13,8 @@ const VAD_MODE = VAD.Mode.NORMAL;
 const vad = new VAD(VAD_MODE);
 
 //Uncomment ONLY one of these:
-const v2t = new DeepSpeech();  //Uncomment for Mozilla DeepSpeech
-//const v2t = new GoogleS2T(); //Uncomment for Google Speech-To-Text
+//const v2t = new DeepSpeech();  //Uncomment for Mozilla DeepSpeech
+const v2t = new GoogleS2T(); //Uncomment for Google Speech-To-Text
 
 //Globals
 let recordedChunks = 0;

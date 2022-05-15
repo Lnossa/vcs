@@ -61,7 +61,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             //global variables after joining the room
             me = room.localParticipant;
 
-
             //Render yourself + all the other participants
             render(room.localParticipant);
             room.remoteParticipants.forEach(render);
@@ -144,11 +143,6 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         //Video ?
         var bHasVideo = participant.mediaStream ? participant.mediaStream.getVideoTracks().length > 0 : false;
 
-
-        //Get local stream and setup voice to text
-        v2tClient = new voiceClient(v2tCallback, config.v2tHost, me.mediaStream);
-
-
         //Create a container div. This will have a unique ID - participantDivId
         const contDiv = document.createElement('div');
         contDiv.className = "col-lg-4";
@@ -227,11 +221,16 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     switchVoiceToText.addEventListener("change", function () {
         if (room.hasAudio()) {
             if (switchVoiceToText.checked) {
+                //Get local stream and setup voice to text
+                v2tClient = new voiceClient(v2tCallback, config.v2tHost, room.localParticipant.mediaStream);
                 v2tClient.startRecording();
                 switchVoiceToText_txt.style.color = "blue";
             }
             else {
-                v2tClient.stopRecording();
+                if(v2tClient) {
+                    v2tClient.stopRecording();
+                    v2tClient.socketDisconnect();
+                }
                 switchVoiceToText_txt.style.color = "black";
             }
         }
@@ -304,7 +303,8 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
             switchVoiceToText.checked = false;
             switchVoiceToText.disabled = true;
-            v2tClient.stopRecording();
+            if(v2tClient)
+                v2tClient.stopRecording();
             switchVoiceToText_txt.style.color = "gray";
         }
 
