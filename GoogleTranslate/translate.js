@@ -12,9 +12,8 @@ module.exports = {
      * @returns 
      */
     translateText: async function (text, from, to) {
-        var output = '';
 
-        console.log([text,from,to]);
+        var output = '';
 
         //You will need to generate your own key file, download it and place the path here.
         const keyPath = './GoogleTranslate/googleApiKey.json'; 
