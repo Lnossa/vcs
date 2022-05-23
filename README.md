@@ -20,5 +20,8 @@
      * https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
  2. Run `npm install` again to get all the additional packages
  3. Launch the voice server by running `cd /Voice2Text/DeepSpeech` and `node DeepSpeech.js`
- 4. Launch main application (see above)
 
+#### GeoLocation
+1. Generate the api key. More info here: https://developers.google.com/maps/documentation/geolocation/get-api-key
+2. Add the generated api-key in `/geo2-main/index.html`
+3. Launch the voice server by running `cd /geo2-main` and `npm start`

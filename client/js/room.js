@@ -5,6 +5,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     var room = null;
     var v2tClient = null;
     var roomState = null;
+    var setLocation = false;
 
     //Document elements
     var inputMessage = document.getElementById("textSendMessage");
@@ -17,6 +18,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     var btnVideo = document.getElementById('toggle-video');
     var btnAudio = document.getElementById('toggle-audio');
     var btnLeave = document.getElementById('leave-button');
+    var btnLocation = document.getElementById('location');
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -270,6 +272,13 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         updateButtons();
     });
 
+    btnLocation.addEventListener("click", async function () {
+        setLocation = !setLocation;
+        updateButtons();
+        if (setLocation)
+            window.open(config.userLocation)
+    });
+
     btnLeave.addEventListener("click", async function () {
         room.leave();
 
@@ -319,6 +328,16 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
         else {
             btnVideo.firstElementChild.className = 'bi-camera-video-off-fill';
             btnVideo.title = 'Enable video';
+        }
+
+        if (setLocation) {
+            btnLocation.firstElementChild.className = 'bi-geo-alt-fill';
+            btnLocation.title = 'Disable location';
+            //mapServer.initMap();//class to be defined
+        }
+        else {
+            btnLocation.firstElementChild.className = 'bi-geo-alt';
+            btnLocation.title = 'Enable location';
         }
     }
 
