@@ -367,6 +367,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
                 }
                 case 'v2t': {
                     pDiv.className = 'text-info';
+                    pDiv.innerHTML = '[Voice2Text] ';
                     break;
                 }
                 case 'sys': {
@@ -377,7 +378,7 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
 
 
             pDiv.style = 'margin-bottom:0;'
-            pDiv.innerHTML = this.sender + ": " + this.text;
+            pDiv.innerHTML += this.sender + ": " + this.text;
 
             textAreaChat.appendChild(pDiv);
             textAreaChat.scrollTop= textAreaChat.scrollHeight;
