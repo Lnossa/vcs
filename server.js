@@ -2,7 +2,7 @@ var fs = require('fs');
 var https = require('https');
 var express = require('express');
 var roomApi = require('./src/roomApi');
-var googleTranslate = require('./GoogleTranslate/translate');
+var googleTranslate = require('./src/GoogleTranslate/translate');
 
 const SERVER_PORT = 8000;
 

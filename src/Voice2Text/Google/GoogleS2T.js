@@ -3,7 +3,7 @@ const stream = require('stream');
 
 const speech = require('@google-cloud/speech');
 
-const apiCreds = fs.readFileSync('../Voice2Text/Google/googleApiKey.json');
+const apiCreds = fs.readFileSync('Voice2Text/Google/googleApiKey.json');
 
 
 class GoogleS2T {

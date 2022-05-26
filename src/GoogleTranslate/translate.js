@@ -16,7 +16,7 @@ module.exports = {
         var output = '';
 
         //You will need to generate your own key file, download it and place the path here.
-        const keyPath = './GoogleTranslate/googleApiKey.json'; 
+        const keyPath = 'src/GoogleTranslate/googleApiKey.json'; 
         const projectId = 'voicerecognition-349810';
         const location = 'global';
 

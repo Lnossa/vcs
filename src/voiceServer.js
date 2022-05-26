@@ -3,8 +3,8 @@ const socketIO = require('socket.io');
 const fs = require('fs');
 const VAD = require('node-vad');
 
-const DeepSpeech = require('../Voice2Text/DeepSpeech/DeepSpeech');
-const GoogleS2T = require('../Voice2Text/Google/GoogleS2T');
+const DeepSpeech = require('./Voice2Text/DeepSpeech/DeepSpeech');
+const GoogleS2T = require('./Voice2Text/Google/GoogleS2T');
 
 //Setup
 const SILENCE_THRESHOLD = 500; // how many milliseconds of inactivity before processing the audio

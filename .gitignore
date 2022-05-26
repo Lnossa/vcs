@@ -13,7 +13,7 @@ client/js/clientConfig.js
 src/apiConfig.js
 cert/*
 Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.pbmm
-Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.scorer
+Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.scorers
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -139,3 +139,7 @@ dist
 
 GoogleTranslate/googleApiKey.json
 Voice2Text/Google/googleApiKey.json
+src/GoogleTranslate/googleApiKey.json
+src/Voice2Text/Google/googleApiKey.json
+src/Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.scorer
+src/Voice2Text/DeepSpeech/aiModels/deepspeech-0.9.3-models.pbmm
