@@ -63,8 +63,8 @@ function processVoice(data) {
 
 	if (recordedChunks === 0) {
         //Uncomment ONLY one of these:
-        //v2t = new DeepSpeech();  //Uncomment for Mozilla DeepSpeech
-        v2t = new GoogleS2T(language); //Uncomment for Google Speech-To-Text    
+        v2t = new DeepSpeech();  //Uncomment for Mozilla DeepSpeech
+        //v2t = new GoogleS2T(language); //Uncomment for Google Speech-To-Text    
         v2t.createStream();
         
 		console.log('');
