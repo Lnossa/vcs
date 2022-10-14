@@ -9,15 +9,9 @@
     * Download the installer **(.msi)** and make sure you select all available options in the *"Custom setup"* step. Click next, and check the box for *"Automatically install the necessary tools.."*
  2. Get the code: `git clone https://github.com/Lnossa/vcs`  
  3. Get all the dependencies: `npm install` - make sure you are in the vcs folder
- 4. Add your api key to `src/apiConfig.js` and change localhost to your your IP in `client/js/clientConfig.js`
+ 4. Add your api key to `src/apiConfig.js` and change localhost to your machine's IP in `client/js/clientConfig.js`
  5. Start the application by running `node server.js`
  
-
-### Google Translate (Optional)
-
- 1. Activate the service for your account and follow the instructions [here](https://cloud.google.com/docs/authentication/api-keys#creating_an_api_key) to generate your API key
- 2. Download the key and save it under `src/GoogleTranslate/` as 'googleApiKey.json'
-
 
 ### Voice Server
 
@@ -40,6 +34,12 @@ Pick one of the 2 APIs below (default is Deepspeech):
  2. Download the key and save it under `src/Voice2Text/Google/` as 'googleApiKey.json'
  3. Run `npm install` again to get all the additional packages
  4. Launch the voice server by running `cd /src` and `node voiceServer.js`
+
+
+### Google Translate (Optional)
+
+ 1. Activate the service for your account and follow the instructions [here](https://cloud.google.com/docs/authentication/api-keys#creating_an_api_key) to generate your API key
+ 2. Download the key and save it under `src/GoogleTranslate/` as 'googleApiKey.json'
 
 ---
 

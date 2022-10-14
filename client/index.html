@@ -27,8 +27,9 @@
                 <div class="col-4"></div>
                 <div class="col-4 text-right" style="margin-top:auto;margin-bottom:auto;">
                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#createRoomModal">Create Room</button>
+                        data-bs-target="#createRoomModal">Add Activity</button>
 
+                    <!-- TODO: Change table to Icons & buttons -->
                     <table id="roomTable" class="table table-sm table-striped table-hover thead-light"
                         style="margin-top:1em;">
                         <thead>
@@ -70,20 +71,48 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createRoomModalLabel">New Room</h5>
+                <h5 class="modal-title" id="createRoomModalLabel">Add Activity</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="form-inline" action="/create" method="post">
                 <div class="modal-body">
+                    <p>Choose Activity:</p>
+                    <div class="form"> <!-- TODO: Add icons for all activities -->
+                        <div class="cc-selector">
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <input id="sound" type="radio" name="roomDesc" value="Sound Therapy" required/>
+                                    <label class="activitycard-cc sound" for="sound" title="Sound-Therapy"></label>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <input id="boxing" type="radio" name="roomDesc" value="Boxing" required/>
+                                    <label class="activitycard-cc boxing" for="boxing" title="Boxing"></label>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <input id="yoga" type="radio" name="roomDesc" value="Yoga" required/>
+                                    <label class="activitycard-cc yoga" for="yoga" title="Yoga"></label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <input id="landscape" type="radio" name="roomDesc" value="Landscapes" required/>
+                                    <label class="activitycard-cc landscape" for="landscape" title="Landscapes"></label>
+                                </div>
+                                <div class="col-4 text-center">
+                                    [Chiropractice]
+                                </div>
+                                <div class="col-4 text-center">
+                                    [Nutrition]
+                                </div>
+                            </div>    
+                        </div>    
+                    </div>
+                    <hr/>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="roomName" name="roomName" autocomplete="off"
                             placeholder="Room name" required>
                         <label for="roomName">Name</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="roomDesc" name="roomDesc" autocomplete="off"
-                            placeholder="Room description" required>
-                        <label for="roomDesc">Description</label>
                     </div>
                 </div>
                 <div class="modal-footer">

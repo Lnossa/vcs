@@ -11,10 +11,11 @@ requirejs(['/js/clientConfig.js'], function (config) {
         var index = 1;
 
         //Get all available rooms 
-        fetch(config.host + '/getAll', function (x) { console.log(x) })
+        fetch(config.host + '/getAll')
             .then(response => { return response.json() })
             .then(rooms => {
 
+                //TODO: Change logic to populate page with Icons & buttons - replace table
                 var placeholderRow = document.getElementById('placeholderRow');
 
                 if (!rooms.data || rooms.data.length == 0) {
