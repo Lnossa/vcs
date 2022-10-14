@@ -2,7 +2,7 @@ html,
 body {
     margin: 0;
     height: 100%;
-    background-image: url("/img/sky-wallpapers.jpg");
+    background-image: url("/img/sky-wallpapers.jpg"); /* TODO: change page background */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
