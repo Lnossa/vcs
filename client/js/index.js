@@ -6,15 +6,20 @@ requirejs(['/js/clientConfig.js'], function (config) {
      */
     function populateTable() {
 
-        var table = document.getElementById('roomTableBody');
-
-        var index = 1;
+        var roomContainer = document.getElementById('roomContainer')
+        var divHandler = ''
+        var index = 0
 
         //Get all available rooms 
         fetch(config.host + '/getAll', function (x) { console.log(x) })
             .then(response => { return response.json() })
             .then(rooms => {
+<<<<<<< Updated upstream
 
+=======
+                //console.log(rooms.data)
+                //TODO: Change logic to populate page with Icons & buttons - replace table
+>>>>>>> Stashed changes
                 var placeholderRow = document.getElementById('placeholderRow');
 
                 if (!rooms.data || rooms.data.length == 0) {
@@ -24,31 +29,53 @@ requirejs(['/js/clientConfig.js'], function (config) {
                     placeholderRow.remove();
 
                     rooms.data.forEach(room => {
-                        var row = table.insertRow(index - 1);
-                        row.setAttribute("id", room.id);
+                        switch(room.description){
+                            case 'Landscapes':
+                                divHandler = divHandler + "<div class=\"col-lg-3 col-md-4 col-sm-6  mt-5\" id=\"room-button\"><img src=\"/img/landscape.png\" class=\"room-logo\"></button></div>\n"
+                            break;
+                            case 'Yoga':
+                                divHandler = divHandler + "<div class=\"col-lg-3 col-md-4 col-sm-6  mt-5\" id=\"room-button\"><img src=\"/img/yoga.png\" class=\"room-logo\"></div>\n"
+                            break;
+                            case 'Sound Therapy':
+                                divHandler = divHandler + "<div class=\"col-lg-3 col-md-4 col-sm-6 mt-5\" id=\"room-button\"><img src=\"/img/sound.png\" class=\"room-logo\"></div>\n"
+                            break;
+                            case 'Boxing':
+                                divHandler = divHandler + "<div class=\"col-lg-3 col-md-4 col-sm-6 mt-5\" id=\"room-button\"><img src=\"/img/boxing.png\" class=\"room-logo\"></div>\n"
+                            break;
+                        }
 
-                        var indexCell = row.insertCell(0);
-                        var nameCell = row.insertCell(1);
-                        var descCell = row.insertCell(2);
-                        var joinCell = row.insertCell(3);
-                        var delCell = row.insertCell(4);
-
-                        indexCell.innerHTML = index;
-                        indexCell.setAttribute('style', 'text-align:center;');
-                        nameCell.innerHTML = room.name;
-                        descCell.innerHTML = room.description;
-                        joinCell.appendChild(createButton('Join', room.id, room.name, ""));
-                        joinCell.setAttribute('style', 'text-align:center;');
-                        joinCell.setAttribute('class', 'col-sm-1');
-                        delCell.appendChild(createButton('Delete', room.id, room.name));
-                        delCell.setAttribute('style', 'text-align:center;');
-                        delCell.setAttribute('class', 'col-sm-1');
-
-                        index++;
+                        roomContainer.innerHTML = divHandler;
+                        
                     });
+
+                    //END OF FOR EACH
+                    roomOnClickHandler();
                 }
             });
     };
+
+    function roomOnClickHandler() {
+        var roomBtn = document.querySelectorAll('#room-button')
+        for(let i=0;i<roomBtn.length;i++)
+        roomBtn[i].addEventListener('click',async function onClick(){
+            let obj;
+            const res = await fetch(config.host + '/getAll')
+            obj = await res.json();
+
+            console.log(i)
+            console.log(obj.data[i].name)
+            console.log(obj.data[i].id)
+
+
+
+            document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + obj.data[i].name);
+            document.getElementById('roomId').value = obj.data[i].id;
+             $('#joinRoomModal').modal('show');
+        })
+      }
+      
+      
+
 
     //call populateTable
     populateTable();
@@ -60,7 +87,7 @@ requirejs(['/js/clientConfig.js'], function (config) {
      * @param {string} name 
      * @returns {HTMLElement} A new HTML button element
      */
-    function createButton(btnType, id, name) {
+     function createButton(btnType, id, name) {
 
         let btn = document.createElement('icon');
         btn.setAttribute('type', 'button');
@@ -85,4 +112,6 @@ requirejs(['/js/clientConfig.js'], function (config) {
         }
         return btn;
     };
+    
+    
 });
