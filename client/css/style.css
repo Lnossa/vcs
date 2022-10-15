@@ -2,11 +2,7 @@ html,
 body {
     margin: 0;
     height: 100%;
-<<<<<<< Updated upstream
-    background-image: url("/img/sky-wallpapers.jpg");
-=======
     background-color: lightblue;
->>>>>>> Stashed changes
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -22,8 +18,6 @@ th {
     float:left;
     margin: 10px;
 }
-<<<<<<< Updated upstream
-=======
 
 
 .divImg {
@@ -185,4 +179,3 @@ p{margin-bottom:.3em;}
     opacity: 100%;
     cursor: pointer;
 }
->>>>>>> Stashed changes

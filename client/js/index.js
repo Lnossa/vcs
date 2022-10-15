@@ -14,12 +14,8 @@ requirejs(['/js/clientConfig.js'], function (config) {
         fetch(config.host + '/getAll', function (x) { console.log(x) })
             .then(response => { return response.json() })
             .then(rooms => {
-<<<<<<< Updated upstream
-
-=======
                 //console.log(rooms.data)
                 //TODO: Change logic to populate page with Icons & buttons - replace table
->>>>>>> Stashed changes
                 var placeholderRow = document.getElementById('placeholderRow');
 
                 if (!rooms.data || rooms.data.length == 0) {
