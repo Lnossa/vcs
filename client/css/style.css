@@ -2,7 +2,7 @@ html,
 body {
     margin: 0;
     height: 100%;
-    background-color: lightblue;
+    background: linear-gradient(135deg, #8B55E9 0%, #5D6BE6 100%);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -167,6 +167,7 @@ p{margin-bottom:.3em;}
   .room-logo{
     width: 100px;
     height: 100px;
+    /* filter: drop-shadow(2px 4px 6px red); */
   }
 
   #room-button{

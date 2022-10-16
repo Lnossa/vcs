@@ -8,7 +8,6 @@ requirejs(['/js/clientConfig.js'], function (config) {
 
         var roomContainer = document.getElementById('roomContainer')
         var divHandler = ''
-        var index = 0
 
         //Get all available rooms 
         fetch(config.host + '/getAll', function (x) { console.log(x) })
@@ -17,11 +16,16 @@ requirejs(['/js/clientConfig.js'], function (config) {
                 //console.log(rooms.data)
                 //TODO: Change logic to populate page with Icons & buttons - replace table
                 var placeholderRow = document.getElementById('placeholderRow');
+                
 
                 if (!rooms.data || rooms.data.length == 0) {
-                    placeholderRow.innerHTML = "No rooms available."
+                    console.log('norooms')
+                    if(placeholderRow)
+                    placeholderRow.remove();
+                    roomContainer.innerHTML = "<h1>No rooms available</h1>"
                 }
-                else {
+                else{
+                    if(placeholderRow)
                     placeholderRow.remove();
 
                     rooms.data.forEach(room => {
@@ -45,69 +49,89 @@ requirejs(['/js/clientConfig.js'], function (config) {
                     });
 
                     //END OF FOR EACH
-                    roomOnClickHandler();
+                    onClickHandler();
                 }
             });
     };
 
-    function roomOnClickHandler() {
-        var roomBtn = document.querySelectorAll('#room-button')
-        for(let i=0;i<roomBtn.length;i++)
-        roomBtn[i].addEventListener('click',async function onClick(){
-            let obj;
+    async function onClickDelete(index){
+                let obj;
+                const res = await fetch(config.host + '/getAll')
+                obj = await res.json();
+
+                console.log(index)
+                console.log(obj.data[index].name)
+                console.log(obj.data[index].id)
+
+
+                if (confirm('Delete ' + obj.data[index].name + '?')) {
+                fetch(config.host + '/delete?id=' + obj.data[index].id);
+                populateTable();
+        }
+    }   
+    async function onClickJoin(index){
+        let obj;
             const res = await fetch(config.host + '/getAll')
             obj = await res.json();
 
-            console.log(i)
-            console.log(obj.data[i].name)
-            console.log(obj.data[i].id)
+            console.log(index)
+            console.log(obj.data[index].name)
+            console.log(obj.data[index].id)
 
 
 
-            document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + obj.data[i].name);
-            document.getElementById('roomId').value = obj.data[i].id;
+            document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + obj.data[index].name);
+            document.getElementById('roomId').value = obj.data[index].id;
              $('#joinRoomModal').modal('show');
-        })
+    }
+
+
+
+
+      var toggleRemove=true
+      function onClickHandler(){
+        toggleRemove = !toggleRemove
+        if(toggleRemove===true){
+            console.log('Remove Mode On')
+            var roomIcons = document.getElementsByClassName('room-logo')
+            for(var i=0;i<roomIcons.length;i++)
+            roomIcons[i].style.cssText += 'filter: drop-shadow(2px 4px 6px red)';
+
+            var roomBtn = document.querySelectorAll('#room-button')
+            for(let i=0;i<roomBtn.length;i++)
+            {var old_element = roomBtn[i]
+            var new_element = old_element.cloneNode(true);
+            old_element.parentNode.replaceChild(new_element, old_element);
+            }        
+           
+            var roomBtn = document.querySelectorAll('#room-button')
+            for(let i=0;i<roomBtn.length;i++)
+            {roomBtn[i].addEventListener('click',onClickDelete.bind(this,i))
+            
+        }
+    }else{
+            console.log('Remove Mode Off')
+            var roomIcons = document.getElementsByClassName('room-logo')
+            for(var i=0;i<roomIcons.length;i++)
+            roomIcons[i].style.cssText += 'filter: none';
+
+            var roomBtn = document.querySelectorAll('#room-button')
+            for(let i=0;i<roomBtn.length;i++)
+            {var old_element = roomBtn[i]
+            var new_element = old_element.cloneNode(true);
+            old_element.parentNode.replaceChild(new_element, old_element);
+            }
+            
+            var roomBtn = document.querySelectorAll('#room-button')
+            for(let i=0;i<roomBtn.length;i++)
+            roomBtn[i].addEventListener('click',onClickJoin.bind(this,i))
+        }
       }
-      
-      
 
-
+      var removeBtn = document.getElementById('removeButton')
+      removeBtn.addEventListener('click', onClickHandler)
+    
     //call populateTable
     populateTable();
-
-    /**
-     * Creates buttons on each row, for every room
-     * @param {string} btnType 
-     * @param {string} id 
-     * @param {string} name 
-     * @returns {HTMLElement} A new HTML button element
-     */
-     function createButton(btnType, id, name) {
-
-        let btn = document.createElement('icon');
-        btn.setAttribute('type', 'button');
-
-        if (btnType == 'Delete')
-            btn.setAttribute('class', 'bi bi-trash-fill text-danger');
-        else if (btnType == 'Join')
-            btn.setAttribute('class', 'bi bi-telephone-plus-fill text-info');
-
-        btn.onclick = function () {
-            if (btnType == 'Delete') {
-                if (confirm('Delete ' + name + '?')) {
-                    document.getElementById(id).remove();
-                    fetch(config.host + '/delete?id=' + id);
-                }
-            }
-            if (btnType == 'Join') {
-                document.getElementById('joinRoomModalLabel').innerHTML = ("Join " + name);
-                document.getElementById('roomId').value = id;
-                $('#joinRoomModal').modal('show');
-            }
-        }
-        return btn;
-    };
-    
     
 });
