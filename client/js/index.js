@@ -22,7 +22,7 @@ requirejs(['/js/clientConfig.js'], function (config) {
                     console.log('norooms')
                     if(placeholderRow)
                     placeholderRow.remove();
-                    roomContainer.innerHTML = "<h1>No rooms available</h1>"
+                    roomContainer.innerHTML = "<h1>No rooms available</h1>";
                 }
                 else{
                     if(placeholderRow)
