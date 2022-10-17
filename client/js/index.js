@@ -54,6 +54,7 @@ requirejs(['/js/clientConfig.js'], function (config) {
             });
     };
 
+
     async function onClickDelete(index){
                 let obj;
                 const res = await fetch(config.host + '/getAll')

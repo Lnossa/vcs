@@ -139,3 +139,4 @@ dist
 
 GoogleTranslate/googleApiKey.json
 Voice2Text/Google/googleApiKey.json
+src/apiConfig.js
