@@ -6,46 +6,10 @@
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vcs-realtime-sdk/dist/umd/vcs-realtime-sdk.min.js"></script>
     <script src="/requirejs/require.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="/bootstrap-icons/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="/css/style.css">
-
-    <link rel="stylesheet" href="/@coreui/icons/css/free.css" />
-
-
-
-
-    <!-- <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            border-collapse: collapse;
-            font-family: verdana;
-            background-image: url("/img/sky-wallpapers.jpg");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .container {
-            height: 97%;
-        }
-
-        .atos-logo {
-            position: absolute;
-            float: left;
-            margin: 10px;
-        }
-
-        .copyright {
-            position: absolute;
-            bottom: 0;
-            margin: 10px;
-        }
-    </style> -->
 </head>
 
 <body>
@@ -57,79 +21,10 @@
                 </a>
             </div>
         </nav>
-        <div class="row h-100">
-            <div class="row">
-                <div class="col-sm-10">
-                    <div class="row" id="divOtherParticipants" style="margin-bottom:1rem;">
-                    </div>
-                    <div class="row" id="divMe">
-                    </div>
-                </div>
-                <div class="col-sm-2" id="divChat">
-                    <div class="card" style="width:18em; margin-top:auto; margin-bottom:auto; position: relative; float:left;">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">
-                                        <button id="location" class="btn location-icon">
-                                            <i class="bi-geo-alt"></i>
-                                        </button>
-                                    </th>
-                                    <th scope="col">
-                                        <button id="toggle-mute" class="btn video-icon">
-                                            <i class="bi bi-mic-mute-fill"></i>
-                                        </button>
-                                    </th>
-                                    <th scope="col">
-                                        <button id="toggle-video" class="btn video-icon">
-                                            <i class="bi bi-camera-video-off-fill"></i>
-                                        </button>
-                                    </th>
-                                    <th scope="col">
-                                        <button id="toggle-audio" class="btn video-icon">
-                                            <i class="fa fa-volume-off"></i>
-                                        </button>
-                                    </th>
-                                    <th scope="col">
-                                        <button id="leave-button" class="btn video-icon" title="Leaves the room">
-                                            <i class="bi bi-x-square-fill"></i>
-                                        </button>
-                                    </th>
-                                </tr>
-                            </thead>
-                        </table>
+    
 
-                    </div>
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">Room chat</h5>
-
-                            <div id="textAreaChat" class="form-control" style="height:18em;overflow:auto;">
-
-                            </div>
-
-                            <div class="input-group mb-2" style="margin-top:1em;">
-                                <input type="text" class="form-control" id="textSendMessage"
-                                       placeholder="Your message..">
-                                <div class="input-group-append">
-                                    <button id="btnSendMessage" class="input-group-text">>
-                                </div>
-                            </div>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="switchVoiceToText">
-                                <label class="form-check-label" for="switchVoiceToText" id="switchVoiceToText_txt">Voice to Text</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <footer class="footer mt-auto">
-            <div class="text-center p-3">
-                © 2022 Copyright: Hackathon - 4Kronstadt
-            </div>
-        </footer>
+        <div class="container h-100" id="videoDiv"></div>  
+        
     </div>
 </body>
 <script src="/js/room.js"></script>

@@ -56,8 +56,11 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             console.log("joined to " + room.name);
             document.title = room.name;
 
+            videoDisplay(returnedRoom.description)
+
+
             //Update button states (mute/audio/video)
-            updateButtons();
+            
 
             //We'll need these later, so save them in  
             //global variables after joining the room
@@ -410,5 +413,26 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
             this.writeInChatBoxOnly();
             await room.sendMessageToParticipant(this);
         }
+    }
+
+    //TODO Add different videos for each room category
+
+    function videoDisplay(roomDescription){
+        var roomDiv = document.getElementById('videoDiv')
+        var videoWidth = roomDiv.clientWidth*9/16
+            switch(roomDescription){
+                case 'Landscapes':
+                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+                break;
+                case 'Yoga':
+                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/NRPXGBuJm9U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+                break;
+                case 'Sound Therapy':
+                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+                break;
+                case 'Boxing':
+                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+                break;
+            }
     }
 });
