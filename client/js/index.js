@@ -67,8 +67,8 @@ requirejs(['/js/clientConfig.js'], function (config) {
 
                 if (confirm('Delete ' + obj.data[index].name + '?')) {
                 fetch(config.host + '/delete?id=' + obj.data[index].id);
-                populateTable();
         }
+        populateTable();
     }   
     async function onClickJoin(index){
         let obj;
