@@ -6,7 +6,7 @@ body {
 } 
 
 body{
-  background: #8B55E9
+  background: white
 }
 
 th {
@@ -39,6 +39,7 @@ Image radio buttons
 .boxing{background-image:url(/img/boxing.png);}
 .yoga{background-image:url(/img/yoga.png);}
 .landscape{background-image:url(/img/landscape.png);}
+.chiro {background-image: url(/img/chiropractice.png);}
 
 
 .cc-selector input{
@@ -179,4 +180,62 @@ p{margin-bottom:.3em;}
 #room-button:hover{
     opacity: 100%;
     cursor: pointer;
+}
+
+#wawButton{
+  position: fixed;
+  right: 20px; bottom: 20px;
+  padding: 5px;
+}
+
+#nextQuestionButton{
+  position: fixed;
+  right: 20px; bottom: 20px;
+  padding: 5px;
+}
+
+#popupForm{
+  visibility:hidden;
+  position: fixed;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+    width: 720px;
+    height: 400px;
+    background-color: white;
+    box-shadow: 5px 5px 8px black;
+    z-index:1000;
+    border-radius: 10px;
+    animation: slide 0,5 forwards;
+    animation-delay: 2s;
+}
+
+
+#closeBtn{
+  margin-left: 95%;
+}
+
+#closeBtn:hover{
+  cursor: pointer;
+}
+
+#customRange1, #customRange2, #customRange3, #customRange4, #customRange5{
+  padding-top: 100px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+#Q2Wrapper, #Q3Wrapper, #Q4Wrapper, #Q5Wrapper{
+  visibility: hidden;
+  position: absolute;
+}
+
+.recommanded-row{
+  padding-top: 7%;
+}
+
+.other-row{
+  padding-top: 4%;
 }

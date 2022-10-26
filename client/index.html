@@ -14,22 +14,79 @@
 </head>
 
 <body>
-    <div class="container container-fluid py-3 d-flex flex-column h-100">
-        <nav class="navbar navbar-light">
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img src="img/atos-logo-white.png" alt=""> 
-                    <button button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#createRoomModal">+</button>
-                        <button type="button" class="btn btn-danger" id="removeButton">-</button>
-                </a>
-            </div>
-        </nav>
-        <div class="container loading-container w-75 h-100">
-            <div class="lds-spinner" id="placeholderRow"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-            <div class="row ms-3 mt-5" id="roomContainer">
+    
+
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="img/atos-logo-blue3.png" alt="">
+                <button button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#createRoomModal">
+                    +
+                </button>
+                <button type="button" class="btn btn-danger" id="removeButton">-</button>
+            </a>
+        </div>
+    </nav>
+
+
+    <div class="container container-fluid py-3 d-flex flex-column h-100" id="mainContainer">
+        <!-- <div class="container loading-container w-75 h-100" id="loadingContainer"> -->
+            <!-- <div class="lds-spinner" id="placeholderRow"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> -->
+            <!-- <div class="row ms-3 mt-5" id="roomContainer">
             
+            </div> -->
+            <!-- <div class="container text-center">
+                <div class="row">
+                  <div>
+                    <h3 class="text-center">Recommanded room</h3>
+                    <img src="/img/landscape.png" id="room-button" class="room-logo">
+                </div>
+                </div>
+                <div class="container text-center">
+                    <div class="row">
+                        <h3 class="text-center">You can also visit</h3>
+                      <div class="col">
+                        <img src="/img/landscape.png" id="room-button" class="room-logo">
+                      </div>
+                      <div class="col">
+                        <img src="/img/landscape.png" id="room-button" class="room-logo">
+                      </div>
+                      <div class="col">
+                        <img src="/img/landscape.png" id="room-button" class="room-logo">
+                      </div>
+                    </div>
+                  </div>
+              </div> -->
+
+            <div class="container" id="popupForm">
+                <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+                    <i class="bi bi-x-lg" id="closeBtn"></i>
+                </nav>
+                <div id="Q1Wrapper">
+                    <h2 class="text-center">1.	Mă simt lipsit de energie fizică și emoțională</h1>
+                    <input type="range" class="form-range" min="1" max="5" id="customRange1">
+                </div> 
+                <div id="Q2Wrapper">
+                    <h2 class="text-center">2.	Mi-aș dori să am mai mult timp pentru activități de relaxare/agrement</h1>
+                    <input type="range" class="form-range" min="1" max="5" id="customRange2">
+                </div> 
+                <div id="Q3Wrapper">
+                    <h2 class="text-center">3.	Resimt adesea dureri sau crampe musculare </h1>
+                    <input type="range" class="form-range" min="1" max="5" id="customRange3">
+                </div>    
+                <div id="Q4Wrapper">
+                    <h2 class="text-center">4.	Am dificultăți de concentrare datorită stresului</h1>
+                    <input type="range" class="form-range" min="1" max="5" id="customRange4">
+                </div>   
+                <div id="Q5Wrapper">
+                    <h2 class="text-center">5.	Mă relaxează muzica și sunetele liniștitoare</h1>
+                    <input type="range" class="form-range" min="1" max="5" id="customRange5">
+                </div>      
+                <button type="button" class="btn btn-outline-info" id="nextQuestionButton">Next</button>
             </div>
+
+            <button type="button" class="btn btn-outline-info" id="wawButton">WaW</button>
         </div>
 </body>
 
@@ -67,6 +124,10 @@
                                 <div class="col-3 text-center">
                                     <input id="landscape" type="radio" name="roomDesc" value="Landscapes" required/>
                                     <label class="activitycard-cc landscape" for="landscape" title="Landscapes"></label>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <input id="chiro" type="radio" name="roomDesc" value="Chiro" required />
+                                    <label class="activitycard-cc chiro" for="chiro" title="Chiro"></label>
                                 </div>
                             </div>
                         </div>    

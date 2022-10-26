@@ -420,19 +420,24 @@ requirejs(['/js/clientConfig.js', '/js/voiceClient.js'], function (config, voice
     function videoDisplay(roomDescription){
         var roomDiv = document.getElementById('videoDiv')
         var videoWidth = roomDiv.clientWidth*9/16
-            switch(roomDescription){
-                case 'Landscapes':
-                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+        switch(roomDescription){
+            case 'Landscapes':
+                roomDiv.innerHTML = '<iframe width="' + roomDiv.clientWidth + '" height="' + videoWidth +'" src="https://www.youtube.com/embed/39TR1alKq-0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+            break;
+            case 'Yoga':
+                roomDiv.innerHTML = '<iframe width="' + roomDiv.clientWidth + '" height="' + videoWidth +'" src="https://www.youtube.com/embed/s-7lyvblFNI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
                 break;
-                case 'Yoga':
-                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/NRPXGBuJm9U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+            case 'Chiro':
+                roomDiv.innerHTML = '<iframe width="' + roomDiv.clientWidth + '" height="' + videoWidth + '" src="https://www.youtube.com/embed/NRPXGBuJm9U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
                 break;
-                case 'Sound Therapy':
-                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
-                break;
-                case 'Boxing':
-                    roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
-                break;
-            }
+            case 'Sound Therapy':
+                roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+            break;
+            case 'Boxing':
+                roomDiv.innerHTML = '<iframe width="'+roomDiv.clientWidth +'" height="'+ videoWidth +'" src="https://www.youtube.com/embed/TB_CtNHtMUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '
+            break;
+        } 
     }
+
+    
 });
